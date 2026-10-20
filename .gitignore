@@ -1,0 +1,17 @@
+# Go
+/bin/
+/dist/
+*.test
+
+# SwiftPM
+macos/.build/
+macos/build/
+.swiftpm/
+*.xcodeproj
+
+# Local stores (the real one lives in ~/.jot)
+*.db
+*.db-shm
+*.db-wal
+
+.DS_Store
