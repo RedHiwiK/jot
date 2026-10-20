@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guidance for AI agents working on this repository. To use Jot for managing requirements, read [docs/agents.md](docs/agents.md) and [skills/jot/SKILL.md](skills/jot/SKILL.md) instead.
+Guidance for AI agents working on this repository. To use Jot for managing requirements, read [docs/en/guides/ai-agents.md](docs/en/guides/ai-agents.md) and [skills/jot/SKILL.md](skills/jot/SKILL.md) instead.
 
 ## Repository map
 
@@ -14,7 +14,8 @@ Guidance for AI agents working on this repository. To use Jot for managing requi
 | `macos/Sources/Jot/i18n/Strings.swift` | Every UI string, English and Simplified Chinese |
 | `macos/Sources/Jot/Theme/` | Color and spacing tokens |
 | `skills/jot/SKILL.md` | The agent skill shipped to users |
-| `docs/` | User documentation |
+| `docs/en/`, `docs/zh/` | User documentation, one file per page with `title`/`description`/`group`/`order` frontmatter; rendered at kunkunred.hiwik.cn/projects/jot/docs/ |
+| `docs/images/` | Images shared by both languages |
 | `scripts/dist.sh` | Release archives |
 
 ## Commands
@@ -41,7 +42,9 @@ Always run against a temporary store (`export JOT_HOME=$(mktemp -d)`); never mut
 
 - Program-generated text is English only: CLI help, errors and receipts, `skills/**/SKILL.md`, and the Markdown body headings (`## Requirement` / `## Acceptance criteria` / `## Notes`, a file format like the frontmatter keys). Do not add a localized skill.
 - User-entered content (titles, `--note`, bodies) is stored as typed and never translated.
-- Code comments, docs, commit messages and pull requests are English. The app localizes UI text only through `Strings.swift`.
+- Code comments, commit messages and pull requests are English. The app localizes UI text only through `Strings.swift`.
+- User docs exist in English (`docs/en/`, the source) and Simplified Chinese (`docs/zh/`) with identical paths. A behavior change updates both in the same pull request; UI names in the Chinese docs match the zh-Hans strings in `Strings.swift`.
+- Docs links are relative Markdown file links (`../reference/cli.md`) so they work on GitHub and on the docs site.
 - Comments explain why the code is written this way or what must not be done; no change history or references to design documents.
 
 ## App design rules

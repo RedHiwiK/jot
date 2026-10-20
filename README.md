@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="#install">Install</a> · <a href="docs/agents.md">Use with AI agents</a> · <a href="docs/cli.md">CLI reference</a> · <a href="docs/macos-app.md">macOS app</a> · <a href="README.zh-CN.md">简体中文</a>
+  <a href="#install">Install</a> · <a href="https://kunkunred.hiwik.cn/en/projects/jot/docs/">Documentation</a> · <a href="docs/en/guides/ai-agents.md">Use with AI agents</a> · <a href="docs/en/reference/cli.md">CLI reference</a> · <a href="README.zh-CN.md">简体中文</a>
 </p>
 
 Jot keeps the requirements, ideas and to-dos that come up while you work: "the search page is slow", "add GPX export in v0.2", "renew the certificate". You (or your coding agent) capture one with a single command; Jot files it under the Git repository you are in, and you move it from Inbox to In Progress to Done on a board.
@@ -30,7 +30,7 @@ It is a `jot` CLI with JSON output, a native SwiftUI app and a skill file for Cl
 **Let your agent do it.** Paste this into Claude Code, Codex or any coding agent:
 
 ```text
-Install the jot CLI and its skill by following https://github.com/RedHiwiK/jot/blob/main/docs/agents.md
+Install the jot CLI and its skill by following https://github.com/RedHiwiK/jot/blob/main/docs/en/guides/ai-agents.md
 ```
 
 **macOS app** (includes the CLI):
@@ -82,7 +82,7 @@ Then talk normally:
 - "Mark 42 done." → `jot mv 42 done`.
 - After opening a PR for requirement 42, the agent runs `jot link 42 <url>` and writes `JOT-42` in the PR.
 
-The skill only manages requirements; it never starts implementing one on its own. Details: [docs/agents.md](docs/agents.md).
+The skill only manages requirements; it never starts implementing one on its own. Details: [AI agents](docs/en/guides/ai-agents.md).
 
 ## Features
 
@@ -111,21 +111,24 @@ The skill only manages requirements; it never starts implementing one on its own
   metadata, state history, tags, links         requirement bodies (Markdown)
 ```
 
-The app never touches the database directly, so every rule lives in one place: the CLI. See [docs/data-model.md](docs/data-model.md).
+The app never touches the database directly, so every rule lives in one place: the CLI. See [Files and data](docs/en/reference/data-model.md).
 
 ## Documentation
 
-| Document | What it covers |
+The full documentation, in English and Chinese, with search: **[kunkunred.hiwik.cn/en/projects/jot/docs](https://kunkunred.hiwik.cn/en/projects/jot/docs/)**. The same pages live in [`docs/`](docs/) and read fine on GitHub.
+
+| Section | Pages |
 |---|---|
-| [AI agents](docs/agents.md) | Installing the CLI and skill for an agent, typical requests, the JSON contract |
-| [CLI reference](docs/cli.md) | Every command and flag, states, tags, links, projects, batch results |
-| [macOS app](docs/macos-app.md) | Installing, Gatekeeper, sidebar and board, shortcuts, design rules |
-| [Data model](docs/data-model.md) | Files on disk, Markdown format, SQLite tables, consistency |
-| [Changelog](CHANGELOG.md) | Release notes |
+| Getting started | [Introduction](docs/en/getting-started/introduction.md) · [Installation](docs/en/getting-started/installation.md) · [Quick start](docs/en/getting-started/quick-start.md) |
+| Guides | [Capturing](docs/en/guides/capturing.md) · [Projects and tags](docs/en/guides/projects-and-tags.md) · [Workflow](docs/en/guides/workflow.md) · [The macOS app](docs/en/guides/macos-app.md) · [AI agents](docs/en/guides/ai-agents.md) · [Pull requests](docs/en/guides/pull-requests.md) |
+| Reference | [CLI](docs/en/reference/cli.md) · [JSON output](docs/en/reference/json-output.md) · [Files and data](docs/en/reference/data-model.md) · [Configuration](docs/en/reference/configuration.md) |
+| Help | [Troubleshooting](docs/en/help/troubleshooting.md) · [Changelog](CHANGELOG.md) |
+
+For agents, the whole documentation as one file: [llms-full.txt](https://kunkunred.hiwik.cn/en/projects/jot/llms-full.txt).
 
 ## For AI agents
 
-- Working **with** Jot (capturing and organizing requirements for a user): read [docs/agents.md](docs/agents.md) and [skills/jot/SKILL.md](skills/jot/SKILL.md). Prefer `--json`, check exit codes, and never run `jot purge` unless the user explicitly asks.
+- Working **with** Jot (capturing and organizing requirements for a user): read [AI agents](docs/en/guides/ai-agents.md) and [skills/jot/SKILL.md](skills/jot/SKILL.md). Prefer `--json`, check exit codes, and never run `jot purge` unless the user explicitly asks.
 - Working **on** this repository: read [AGENTS.md](AGENTS.md) for the repository map, build and test commands and conventions.
 
 ## Build from source

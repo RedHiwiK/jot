@@ -15,14 +15,14 @@
 </p>
 
 <p align="center">
-  <a href="#安装">安装</a> · <a href="docs/agents.md">配合 AI agent</a> · <a href="docs/cli.md">CLI 参考</a> · <a href="docs/macos-app.md">macOS App</a> · <a href="README.md">English</a>
+  <a href="#安装">安装</a> · <a href="https://kunkunred.hiwik.cn/projects/jot/docs/">使用文档</a> · <a href="docs/zh/guides/ai-agents.md">配合 AI agent</a> · <a href="docs/zh/reference/cli.md">CLI 参考</a> · <a href="README.md">English</a>
 </p>
 
 Jot 用来记工作中冒出来的需求、想法和待办，比如"搜索页太慢""v0.2 加 GPX 导出""续费证书"。你或你的 coding agent 一条命令就能记下来；Jot 会自动归到当前所在的 Git 仓库，之后在看板上从 Inbox 推到 In Progress 再到 Done。
 
 它由三部分组成：带 JSON 输出的 `jot` CLI、原生 SwiftUI App、给 Claude Code / Codex 等 agent 用的 skill 文件。三者共用一份本地数据：元数据在 SQLite，每条需求的正文是一个 Markdown 文件。不需要账号、服务器或同步服务。
 
-文档以英文为准，下面只列最常用的部分。
+完整的中英文使用文档（带搜索）在 **[kunkunred.hiwik.cn/projects/jot/docs](https://kunkunred.hiwik.cn/projects/jot/docs/)**，仓库的 [`docs/zh/`](docs/zh/) 里也能直接读。
 
 ![Jot 看板](docs/images/board.png)
 
@@ -31,7 +31,7 @@ Jot 用来记工作中冒出来的需求、想法和待办，比如"搜索页太
 **交给 agent 装**：把这句话发给 Claude Code、Codex 或其他 coding agent：
 
 ```text
-Install the jot CLI and its skill by following https://github.com/RedHiwiK/jot/blob/main/docs/agents.md
+Install the jot CLI and its skill by following https://github.com/RedHiwiK/jot/blob/main/docs/en/guides/ai-agents.md
 ```
 
 **macOS App**（内置 CLI）：
@@ -83,7 +83,7 @@ curl -fsSL https://raw.githubusercontent.com/RedHiwiK/jot/main/skills/jot/SKILL.
 - "42 做完了" → `jot mv 42 done`。
 - 为 42 号需求开了 PR 后，agent 会执行 `jot link 42 <url>`，并在 PR 里写 `JOT-42`。
 
-skill 只管理需求，不会自己开始实现。详见 [docs/agents.md](docs/agents.md)。
+skill 只管理需求，不会自己开始实现。详见 [AI agent](docs/zh/guides/ai-agents.md)。
 
 ## 从源码构建
 

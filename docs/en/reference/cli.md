@@ -1,6 +1,11 @@
-# CLI reference
+---
+title: CLI reference
+description: Every jot command and flag.
+group: reference
+order: 1
+---
 
-`jot` is the single source of truth for every write: the macOS app and the agent skill both call it. Every command that reads or writes data accepts `--json` for machine-readable output; without it, output is a short human-readable receipt.
+`jot` is the single source of truth for every write: the macOS app and the agent skill both call it. Every command that reads or writes data accepts `--json` for machine-readable output ([JSON output](./json-output.md)); without it, output is a short human-readable receipt.
 
 Run `jot <command> --help` for the full flag list of any command.
 
@@ -25,7 +30,7 @@ jot add --stdin < titles.txt          # one requirement per line
 
 New requirements start in `inbox`. Without `--project`, the project is inferred from the current directory: inside a Git repository the repository is registered as a project automatically (named after its directory); elsewhere the requirement stays project-less. `--unfiled` skips inference.
 
-A single `add --json` returns one requirement object; `add --stdin --json` returns an array.
+A single `add --json` returns one requirement object; several titles (from `--stdin`, a pipe or a multi-line argument) return an array. `add` stops at the first error, keeping the titles captured before it.
 
 ## Query
 
@@ -128,7 +133,7 @@ Projects are optional categories and do not have to be Git repositories. `repo_u
 
 ## Batch results and errors
 
-Batch commands (`add --stdin`, `triage`, `tag`, `untag`) process every item and return `{reqs, failed}` in JSON. Any failure makes the command exit non-zero, so check both the exit code and `failed`.
+Batch commands (`triage`, `tag`, `untag`) process every item and return `{reqs, failed}` in JSON. Any failure makes the command exit non-zero, so check both the exit code and `failed`.
 
 Errors go to stderr as `error: ...` with exit code 1. `not initialized yet; run: jot init` means the store does not exist.
 

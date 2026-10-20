@@ -114,7 +114,7 @@ jot unlink 42 --all
 
 After opening a PR or MR that implements a requirement, bind it with `jot link <id> <url>` right away — the GUI shows bound links on the detail page, and nothing else connects the two. `link` is incremental, so binding a second PR keeps the first. In PR/MR titles, descriptions, and commits, refer to the requirement as `JOT-42`, never a bare `#42`, which GitHub and GitLab link to their own issue or PR 42.
 
-When `jot` is not installed (or `jot --version` does not print `jot version ...`, which means macOS's unrelated `/usr/bin/jot` was found first), say so and offer to install it following https://github.com/RedHiwiK/jot/blob/main/docs/agents.md. When it is installed but not initialized, a capture task may run `jot init` first. Respect the data location given by `JOT_HOME`, and do not rewrite another tool's configuration.
+When `jot` is not installed (or `jot --version` does not print `jot version ...`, which means macOS's unrelated `/usr/bin/jot` was found first), say so and offer to install it following https://github.com/RedHiwiK/jot/blob/main/docs/en/guides/ai-agents.md. When it is installed but not initialized, a capture task may run `jot init` first. Respect the data location given by `JOT_HOME`, and do not rewrite another tool's configuration.
 
 Report errors when a command fails; never describe a read failure as "no requirements". The GUI, the CLI, and this skill share one local store.
 

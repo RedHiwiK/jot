@@ -1,15 +1,21 @@
-# Data model
+---
+title: Files and data
+description: What Jot stores where, the Markdown format and the SQLite tables.
+group: reference
+order: 3
+---
 
 Everything lives in one directory, `~/.jot` by default or `$JOT_HOME` when set:
 
 ```
 ~/.jot/
 ├── jot.db                       SQLite (WAL): metadata, state history, tags, links, settings
+├── themes/                      optional custom app themes (*.json)
 └── reqs/
     ├── _inbox/                  project-less requirements
-    │   └── 0007-2026-10-20-plan-the-weekend.md
+    │   └── 0007-2026-10-20-Plan-the-weekend.md
     └── myapp/
-        └── 0042-2026-10-18-search-page-is-slow.md
+        └── 0042-2026-10-18-Search-page-is-slow.md
 ```
 
 Back up the whole directory. Nothing outside it is read or written, apart from `.git/config` of registered projects to infer their web URL.
@@ -54,7 +60,7 @@ The three headings are a fixed file format, like the frontmatter keys. Content u
 | `req_links` | `(req_id, url)` pairs in binding order |
 | `meta` | Settings such as the editor |
 
-The schema is in [`internal/store/schema.sql`](../internal/store/schema.sql). The app never opens the database directly: it calls the bundled CLI and decodes its JSON, so state rules, project inference and frontmatter sync exist in one place.
+The schema is in [`internal/store/schema.sql`](https://github.com/RedHiwiK/jot/blob/main/internal/store/schema.sql). The app never opens the database directly: it calls the bundled CLI and decodes its JSON, so state rules, project inference and frontmatter sync exist in one place.
 
 ## Consistency
 
