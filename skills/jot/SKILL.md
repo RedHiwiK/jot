@@ -13,7 +13,7 @@ Translate the user's requirement-management intent into `jot` calls and report b
 jot add "Title" --note "Context, conclusion, or acceptance criteria"
 jot add "Personal task" --unfiled
 jot add "Title" --project registered-project-name
-jot add "Title" --tag v2.4.4
+jot add "Title" --tag v1.2.0
 jot add --stdin < requirements.txt
 ```
 
@@ -28,7 +28,7 @@ jot ls --json
 jot ls --all --json
 jot ls --project project-name --json
 jot ls --state inbox --json
-jot ls --tag v2.4.4 --json
+jot ls --tag v1.2.0 --json
 jot show 42 --json
 jot body 42
 jot body set 42 < body.md
@@ -43,21 +43,21 @@ Prefer JSON for queries, then summarize the user's open items and progress — n
 ## Tags
 
 ```bash
-jot tag 42 v2.4.4                 # add, keeping existing tags
-jot tag 42 43 44 v2.4.4           # tag a batch for one release
+jot tag 42 v1.2.0                 # add, keeping existing tags
+jot tag 42 43 44 v1.2.0           # tag a batch for one release
 jot tag 42 --tag 2026             # --tag takes the value literally
-jot untag 42 v2.4.4
+jot untag 42 v1.2.0
 jot tag 42 --clear
-jot set 42 --tags v2.4.4,bug      # replace every tag
-jot ls --tag v2.4.4 --tag bug --json   # all of them (AND)
-jot ls --tag-any v2.4.4,v2.4.5 --json  # any of them (OR)
+jot set 42 --tags v1.2.0,bug      # replace every tag
+jot ls --tag v1.2.0 --tag bug --json   # all of them (AND)
+jot ls --tag-any v1.2.0,v1.3.0 --json  # any of them (OR)
 jot ls --untagged --json
 jot tag ls --json                 # every tag in use, with counts
-jot tag rename v2.4.4 v2.4.5
-jot tag rm v2.4.4
+jot tag rename v1.2.0 v1.3.0
+jot tag rm v1.2.0
 ```
 
-Tags are a free-form dimension orthogonal to project — typically a version number (`v2.4.4`) or a theme (`bug`). They are normalized to lower case and a leading `#` is dropped, so `#V2.4.4` and `v2.4.4` are one tag; letters, digits and `. _ / -` are allowed, and spaces and commas separate tags rather than belonging to one.
+Tags are a free-form dimension orthogonal to project — typically a version number (`v1.2.0`) or a theme (`bug`). They are normalized to lower case and a leading `#` is dropped, so `#V1.2.0` and `v1.2.0` are one tag; letters, digits and `. _ / -` are allowed, and spaces and commas separate tags rather than belonging to one.
 
 In `tag` and `untag`, a leading all-digit argument is read as a requirement ID, so pass an all-digit tag with `--tag` (which takes its value literally and cannot be mixed with positional tags). `tag` and `untag` are incremental and take several IDs; `set --tags` replaces a requirement's tags outright, so reach for it only when the user means to overwrite. There is no tag registry: a tag exists exactly as long as some requirement carries it, which is why `tag ls` is a live view rather than a list to maintain. `tag rm` only drops the label — no requirement is deleted and no state changes. `ls --json` already returns the full tag list alongside the results, so do not call `tag ls` just to discover what exists.
 

@@ -11,11 +11,11 @@ struct DoneGroupingTests {
 
     private func populated() -> AppState {
         let state = AppState()
-        state.projects = [Project(name: "CutePet", repoPath: "/a", openCount: 0),
+        state.projects = [Project(name: "Pawprint", repoPath: "/a", openCount: 0),
                           Project(name: "jot", repoPath: "/b", openCount: 0)]
-        state.reqs = [requirement(1, project: "CutePet", state: .done),
+        state.reqs = [requirement(1, project: "Pawprint", state: .done),
                       requirement(2, project: "jot", state: .done),
-                      requirement(3, project: "CutePet", state: .done),
+                      requirement(3, project: "Pawprint", state: .done),
                       requirement(4, project: nil, state: .done),
                       requirement(5, project: "jot", state: .inbox)]
         return state
@@ -26,7 +26,7 @@ struct DoneGroupingTests {
         state.showState(.done)
         #expect(state.groupsByProject)
         // Order follows the sidebar's project order, with project-less last
-        #expect(state.projectSections.map(\.project) == ["CutePet", "jot", ""])
+        #expect(state.projectSections.map(\.project) == ["Pawprint", "jot", ""])
         #expect(state.projectSections.map(\.reqs.count) == [2, 1, 1])
 
         state.showState(.inbox)
@@ -47,14 +47,14 @@ struct DoneGroupingTests {
         state.showState(.done)
         #expect(state.navigableReqs.count == 4)
 
-        state.toggleCollapsed("CutePet")
+        state.toggleCollapsed("Pawprint")
         // Collapsed sections are skipped by up/down navigation, otherwise the cursor lands on hidden rows
-        #expect(state.isCollapsed("CutePet"))
+        #expect(state.isCollapsed("Pawprint"))
         #expect(state.navigableReqs.map(\.id) == [2, 4])
         // The section itself still exists, just not expanded
-        #expect(state.projectSections.map(\.project) == ["CutePet", "jot", ""])
+        #expect(state.projectSections.map(\.project) == ["Pawprint", "jot", ""])
 
-        state.toggleCollapsed("CutePet")
+        state.toggleCollapsed("Pawprint")
         #expect(state.navigableReqs.count == 4)
     }
 

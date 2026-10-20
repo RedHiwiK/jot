@@ -22,9 +22,9 @@ func newLsCmd() *cobra.Command {
 		Example: `  jot ls
   jot ls --state inbox
   jot ls --project myapp
-  jot ls --tag v2.4.4
-  jot ls --tag v2.4.4 --tag bug     # both tags (AND)
-  jot ls --tag-any v2.4.4,v2.4.5    # either tag (OR)
+  jot ls --tag v1.2.0
+  jot ls --tag v1.2.0 --tag bug     # both tags (AND)
+  jot ls --tag-any v1.2.0,v1.3.0    # either tag (OR)
   jot ls --all`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			s, err := openStore()

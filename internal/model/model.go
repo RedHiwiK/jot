@@ -48,7 +48,7 @@ type Req struct {
 	Project   string // denormalized project name from a join, for display
 	Priority  int
 
-	Tags []string // free-form tags such as v2.4.4 / bug, normalized to lowercase
+	Tags []string // free-form tags such as v1.2.0 / bug, normalized to lowercase
 
 	Links []string // linked PRs/MRs and other external URLs, in the order added
 
@@ -143,8 +143,8 @@ func truncateRunes(s string, n int) string {
 	return strings.TrimRight(string(r[:n]), "-.")
 }
 
-// Tags are free text but must be normalized, or V2.4.4 and v2.4.4 would become two tags.
-// Letters, digits and . _ / - are allowed (covers v2.4.4, p0, ui/board); spaces and commas are CLI
+// Tags are free text but must be normalized, or V1.2.0 and v1.2.0 would become two tags.
+// Letters, digits and . _ / - are allowed (covers v1.2.0, p0, ui/board); spaces and commas are CLI
 // separators and cannot appear in tags.
 var illegalTagChars = regexp.MustCompile(`[^\p{L}\p{N}._/-]`)
 
@@ -153,10 +153,10 @@ const MaxTagLen = 32
 // NormalizeTag cleans user input into a canonical tag. An empty result means the input had no valid characters.
 func NormalizeTag(s string) string {
 	t := strings.ToLower(strings.TrimSpace(s))
-	t = strings.TrimPrefix(t, "#") // allow the #v2.4.4 form
+	t = strings.TrimPrefix(t, "#") // allow the #v1.2.0 form
 	t = illegalTagChars.ReplaceAllString(t, "")
 	t = strings.Trim(t, "-._/")
-	// Truncation may leave a trailing separator (v2.4.4-long… → …-), so trim again
+	// Truncation may leave a trailing separator (v1.2.0-long… → …-), so trim again
 	return strings.Trim(truncateRunes(t, MaxTagLen), "-._/")
 }
 

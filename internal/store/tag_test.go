@@ -19,9 +19,9 @@ func mustReq(t *testing.T, s *Store, title string) *model.Req {
 
 func TestNormalizeTag(t *testing.T) {
 	cases := map[string]string{
-		"v2.4.4":    "v2.4.4",
-		"  V2.4.4 ": "v2.4.4",
-		"#v2.4.4":   "v2.4.4",
+		"v1.2.0":    "v1.2.0",
+		"  V1.2.0 ": "v1.2.0",
+		"#v1.2.0":   "v1.2.0",
 		"UI/Board":  "ui/board",
 		"a b":       "ab", // space is a separator, not part of the tag
 		"!!!":       "",
@@ -41,11 +41,11 @@ func TestNormalizeTag(t *testing.T) {
 }
 
 func TestParseTagsDedupesAndSplits(t *testing.T) {
-	got, err := model.ParseTags([]string{"v2.4.4,BUG", "bug", " ui "})
+	got, err := model.ParseTags([]string{"v1.2.0,BUG", "bug", " ui "})
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := []string{"v2.4.4", "bug", "ui"}
+	want := []string{"v1.2.0", "bug", "ui"}
 	if strings.Join(got, ",") != strings.Join(want, ",") {
 		t.Fatalf("got %v, want %v", got, want)
 	}
@@ -58,7 +58,7 @@ func TestTagAddRemoveSet(t *testing.T) {
 	s := testStore(t)
 	r := mustReq(t, s, "Tagged")
 
-	if _, err := s.AddTags(r.ID, []string{"v2.4.4", "bug"}); err != nil {
+	if _, err := s.AddTags(r.ID, []string{"v1.2.0", "bug"}); err != nil {
 		t.Fatal(err)
 	}
 	// Adding a duplicate must neither fail nor create a duplicate row
@@ -66,14 +66,14 @@ func TestTagAddRemoveSet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Join(tags, ",") != "bug,v2.4.4" {
+	if strings.Join(tags, ",") != "bug,v1.2.0" {
 		t.Fatalf("after re-add: %v", tags)
 	}
 
 	if tags, err = s.RemoveTags(r.ID, []string{"bug", "never-set"}); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Join(tags, ",") != "v2.4.4" {
+	if strings.Join(tags, ",") != "v1.2.0" {
 		t.Fatalf("after remove: %v", tags)
 	}
 
@@ -104,10 +104,10 @@ func TestListReqsTagFilters(t *testing.T) {
 	b := mustReq(t, s, "B")
 	mustReq(t, s, "C") // untagged
 
-	if _, err := s.AddTags(a.ID, []string{"v2.4.4", "bug"}); err != nil {
+	if _, err := s.AddTags(a.ID, []string{"v1.2.0", "bug"}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := s.AddTags(b.ID, []string{"v2.4.4"}); err != nil {
+	if _, err := s.AddTags(b.ID, []string{"v1.2.0"}); err != nil {
 		t.Fatal(err)
 	}
 
@@ -125,11 +125,11 @@ func TestListReqsTagFilters(t *testing.T) {
 	}
 
 	// AND: both tags required
-	if got := ids(ListFilter{Tags: []string{"v2.4.4", "bug"}}); len(got) != 1 || got[0] != a.ID {
+	if got := ids(ListFilter{Tags: []string{"v1.2.0", "bug"}}); len(got) != 1 || got[0] != a.ID {
 		t.Fatalf("AND filter returned %v", got)
 	}
 	// OR: either tag matches
-	if got := ids(ListFilter{TagsAny: []string{"bug", "v2.4.4"}}); len(got) != 2 {
+	if got := ids(ListFilter{TagsAny: []string{"bug", "v1.2.0"}}); len(got) != 2 {
 		t.Fatalf("OR filter returned %v", got)
 	}
 	// Untagged
@@ -141,7 +141,7 @@ func TestListReqsTagFilters(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(reqs) != 1 || strings.Join(reqs[0].Tags, ",") != "bug,v2.4.4" {
+	if len(reqs) != 1 || strings.Join(reqs[0].Tags, ",") != "bug,v1.2.0" {
 		t.Fatalf("tags were not loaded: %+v", reqs)
 	}
 }
@@ -149,18 +149,18 @@ func TestListReqsTagFilters(t *testing.T) {
 func TestRenameTagMergesInsteadOfDuplicating(t *testing.T) {
 	s := testStore(t)
 	r := mustReq(t, s, "Both")
-	if _, err := s.AddTags(r.ID, []string{"v2.4.4", "v2.4.5"}); err != nil {
+	if _, err := s.AddTags(r.ID, []string{"v1.2.0", "v1.3.0"}); err != nil {
 		t.Fatal(err)
 	}
 	// Renaming onto an existing tag merges them instead of violating the primary key
-	if _, err := s.RenameTag("v2.4.4", "v2.4.5"); err != nil {
+	if _, err := s.RenameTag("v1.2.0", "v1.3.0"); err != nil {
 		t.Fatal(err)
 	}
 	tags, err := s.ReqTags(r.ID)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Join(tags, ",") != "v2.4.5" {
+	if strings.Join(tags, ",") != "v1.3.0" {
 		t.Fatalf("after rename: %v", tags)
 	}
 	if _, err := s.RenameTag("gone", "x"); err == nil {
@@ -223,7 +223,7 @@ func TestFrontmatterCarriesTags(t *testing.T) {
 		t.Fatal("an untagged requirement should not get a tags line")
 	}
 
-	if r.Tags, err = s.AddTags(r.ID, []string{"v2.4.4", "bug"}); err != nil {
+	if r.Tags, err = s.AddTags(r.ID, []string{"v1.2.0", "bug"}); err != nil {
 		t.Fatal(err)
 	}
 	if err := s.SyncFrontmatter(r); err != nil {
@@ -232,7 +232,7 @@ func TestFrontmatterCarriesTags(t *testing.T) {
 	if body, err = s.ReadBody(r); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(body, "tags: [bug, v2.4.4]") {
+	if !strings.Contains(body, "tags: [bug, v1.2.0]") {
 		t.Fatalf("frontmatter missing tags:\n%s", body)
 	}
 	// Sync must not stack duplicate frontmatter blocks

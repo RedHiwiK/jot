@@ -23,12 +23,12 @@ func newTagCmd() *cobra.Command {
 		Short: "Add tags to requirements (incremental)",
 		Long: `Add tags to one or more requirements, keeping the tags they already have.
 
-Tags are free-form labels such as a version number (v2.4.4) or a theme (bug).
-They are normalized to lower case; a leading # is dropped, so v2.4.4 and #V2.4.4
+Tags are free-form labels such as a version number (v1.2.0) or a theme (bug).
+They are normalized to lower case; a leading # is dropped, so v1.2.0 and #V1.2.0
 are the same tag. Use jot set --tags to replace a requirement's tags outright.`,
-		Example: `  jot tag 42 v2.4.4
-  jot tag 42 43 44 v2.4.4        # tag a batch for one release
-  jot tag 42 v2.4.4,bug          # comma-separated also works
+		Example: `  jot tag 42 v1.2.0
+  jot tag 42 43 44 v1.2.0        # tag a batch for one release
+  jot tag 42 v1.2.0,bug          # comma-separated also works
   jot tag 42 --tag 2026          # --tag takes the value literally, digits included
   jot tag 42 --clear             # drop every tag`,
 		Args: cobra.MinimumNArgs(1),
@@ -42,7 +42,7 @@ are the same tag. Use jot set --tags to replace a requirement's tags outright.`,
 	return cmd
 }
 
-// splitIDsAndTags splits `42 43 v2.4.4 bug` into IDs and tags.
+// splitIDsAndTags splits `42 43 v1.2.0 bug` into IDs and tags.
 // Leading numbers (or #numbers) are IDs; everything from the first non-number on is a tag.
 //
 // Positional args can't distinguish "ID 42" from "tag 42", so numeric tags must use --tag.
@@ -92,7 +92,7 @@ func runTagAdd(cmd *cobra.Command, args []string) error {
 	if !clear && len(tags) == 0 {
 		// All-numeric positional args are treated as IDs, so `jot tag 1 2026` ends up here.
 		// Say so explicitly; otherwise the user only sees "no tags given" with no idea where the tag went.
-		return fmt.Errorf("no tags given (example: jot tag %d v2.4.4); "+
+		return fmt.Errorf("no tags given (example: jot tag %d v1.2.0); "+
 			"an all-digit argument is read as a requirement ID, so pass such a tag as --tag 2026", ids[0])
 	}
 
@@ -116,7 +116,7 @@ func newUntagCmd() *cobra.Command {
 		Use:   "untag <id...> <tag...>",
 		Short: "Remove tags from requirements",
 		Args:  cobra.MinimumNArgs(1),
-		Example: `  jot untag 42 v2.4.4
+		Example: `  jot untag 42 v1.2.0
   jot untag 42 --tag 2026        # --tag takes the value literally`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			asJSON, _ := cmd.Flags().GetBool("json")
@@ -132,7 +132,7 @@ func newUntagCmd() *cobra.Command {
 			}
 			tags = mergeTags(flagTags, tags)
 			if len(tags) == 0 {
-				return fmt.Errorf("no tags given (example: jot untag %d v2.4.4); "+
+				return fmt.Errorf("no tags given (example: jot untag %d v1.2.0); "+
 					"an all-digit argument is read as a requirement ID, so pass such a tag as --tag 2026", ids[0])
 			}
 			s, err := openStore()
@@ -248,7 +248,7 @@ carries it, so this is a live view rather than a list you maintain.`,
 				return writeJSON(map[string]any{"tags": out})
 			}
 			if len(tags) == 0 {
-				fmt.Println(dim("No tags yet. Add one with: jot tag <id> v2.4.4"))
+				fmt.Println(dim("No tags yet. Add one with: jot tag <id> v1.2.0"))
 				return nil
 			}
 			for _, t := range tags {
@@ -269,7 +269,7 @@ func newTagRenameCmd() *cobra.Command {
 		Short:   "Rename a tag across every requirement",
 		Long:    "Rename a tag everywhere it is used. Requirements already carrying the new tag simply keep one copy.",
 		Args:    cobra.ExactArgs(2),
-		Example: `  jot tag rename v2.4.4 v2.4.5`,
+		Example: `  jot tag rename v1.2.0 v1.3.0`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			from, to := model.NormalizeTag(args[0]), model.NormalizeTag(args[1])
 			if from == "" || to == "" {
@@ -312,7 +312,7 @@ func newTagRmCmd() *cobra.Command {
 
 Only the label is dropped: no requirement is deleted and nothing changes state.`,
 		Args:    cobra.ExactArgs(1),
-		Example: `  jot tag rm v2.4.4`,
+		Example: `  jot tag rm v1.2.0`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			tag := model.NormalizeTag(args[0])
 			if tag == "" {

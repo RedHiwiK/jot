@@ -56,6 +56,17 @@ Always run against a temporary store (`export JOT_HOME=$(mktemp -d)`); never mut
 - App logic that can run without UI (decoding, navigation, filtering, shortcuts) gets Swift Testing tests in `macos/Tests/JotTests`.
 - UI changes are checked by hand; describe what you checked.
 
+## Public repository hygiene
+
+This repository is public. Everything committed, pushed or attached to a release is published.
+
+- No personal or workplace identifiers: real names, personal email addresses, employer or internal project names, local absolute paths, hostnames, tokens. Examples use neutral names (`myapp`, `pawprint`, `~/code/myapp`, `owner/repo`).
+- Never copy content from a real store (`~/.jot`): requirement titles, project names and tags in tests, docs and screenshots are made up. Screenshots come from a throwaway `JOT_HOME` with fictional data.
+- Strip image metadata before committing (`exiftool -all= <file>`): screenshots carry display profiles and capture notes.
+- Commit with the GitHub noreply identity; never add co-author or signature lines that expose other identities.
+- Published history is never rewritten: no force pushes, amends of pushed commits or tag moves. Fix mistakes with a new commit; if something sensitive was pushed, stop and rotate or remove it with the owner's approval.
+- Never commit `dist/`, build products, local stores (`*.db`) or `.env` files.
+
 ## Releases
 
 `Version` in `internal/cli/root.go` is the single version source; the app bundle reads it at build time. Pushing a tag `v<Version>` runs `.github/workflows/release.yml`. See [CONTRIBUTING.md](CONTRIBUTING.md#releasing).

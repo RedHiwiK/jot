@@ -41,7 +41,7 @@ func TestTagAddCaptureAndNormalization(t *testing.T) {
 		t.Fatal(err)
 	}
 	// Tags given at capture time are normalized for case, # prefix and comma separation
-	out, err := executeCaptured(t, "add", "Tagged capture", "--unfiled", "--tag", "#V2.4.4,BUG", "--json")
+	out, err := executeCaptured(t, "add", "Tagged capture", "--unfiled", "--tag", "#V1.2.0,BUG", "--json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,8 +49,8 @@ func TestTagAddCaptureAndNormalization(t *testing.T) {
 	if err := json.Unmarshal([]byte(out), &r); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Join(r.Tags, ",") != "bug,v2.4.4" {
-		t.Fatalf("tags = %v, want [bug v2.4.4]", r.Tags)
+	if strings.Join(r.Tags, ",") != "bug,v1.2.0" {
+		t.Fatalf("tags = %v, want [bug v1.2.0]", r.Tags)
 	}
 }
 
@@ -61,14 +61,14 @@ func TestTagIncrementalVersusReplace(t *testing.T) {
 	}
 	id := addForTagging(t, "Incremental")
 
-	if _, err := executeCaptured(t, "tag", itoa(id), "v2.4.4"); err != nil {
+	if _, err := executeCaptured(t, "tag", itoa(id), "v1.2.0"); err != nil {
 		t.Fatal(err)
 	}
 	// tag is incremental: a second call must not wipe the first
 	if _, err := executeCaptured(t, "tag", itoa(id), "bug"); err != nil {
 		t.Fatal(err)
 	}
-	if got := strings.Join(tagsOf(t, id), ","); got != "bug,v2.4.4" {
+	if got := strings.Join(tagsOf(t, id), ","); got != "bug,v1.2.0" {
 		t.Fatalf("after incremental tagging: %s", got)
 	}
 
@@ -96,7 +96,7 @@ func TestTagBatchReportsPartialFailure(t *testing.T) {
 	id := addForTagging(t, "Real one")
 
 	// A partial failure must exit non-zero, or an agent will treat it as full success
-	out, err := executeCaptured(t, "tag", itoa(id), "999", "v2.4.4", "--json")
+	out, err := executeCaptured(t, "tag", itoa(id), "999", "v1.2.0", "--json")
 	if err == nil {
 		t.Fatal("expected a nonzero exit for the missing requirement")
 	}
@@ -111,7 +111,7 @@ func TestTagBatchReportsPartialFailure(t *testing.T) {
 		t.Fatalf("got %d ok / %d failed, want 1/1", len(result.Reqs), len(result.Failed))
 	}
 	// The successful item still gets its tag; a failed item must not roll back the batch
-	if got := strings.Join(tagsOf(t, id), ","); got != "v2.4.4" {
+	if got := strings.Join(tagsOf(t, id), ","); got != "v1.2.0" {
 		t.Fatalf("successful item lost its tag: %s", got)
 	}
 }
@@ -124,10 +124,10 @@ func TestLsTagFiltersAndTagListing(t *testing.T) {
 	a := addForTagging(t, "A")
 	b := addForTagging(t, "B")
 	addForTagging(t, "C")
-	if _, err := executeCaptured(t, "tag", itoa(a), "v2.4.4", "bug"); err != nil {
+	if _, err := executeCaptured(t, "tag", itoa(a), "v1.2.0", "bug"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := executeCaptured(t, "tag", itoa(b), "v2.4.4"); err != nil {
+	if _, err := executeCaptured(t, "tag", itoa(b), "v1.2.0"); err != nil {
 		t.Fatal(err)
 	}
 
@@ -144,10 +144,10 @@ func TestLsTagFiltersAndTagListing(t *testing.T) {
 		return res
 	}
 
-	if got := list("--tag", "v2.4.4", "--tag", "bug"); len(got.Reqs) != 1 || got.Reqs[0].ID != a {
+	if got := list("--tag", "v1.2.0", "--tag", "bug"); len(got.Reqs) != 1 || got.Reqs[0].ID != a {
 		t.Fatalf("AND filter returned %d results", len(got.Reqs))
 	}
-	if got := list("--tag-any", "v2.4.4,none"); len(got.Reqs) != 2 {
+	if got := list("--tag-any", "v1.2.0,none"); len(got.Reqs) != 2 {
 		t.Fatalf("OR filter returned %d results", len(got.Reqs))
 	}
 	if got := list("--untagged"); len(got.Reqs) != 1 {
@@ -165,17 +165,17 @@ func TestTagRenameAndRemove(t *testing.T) {
 		t.Fatal(err)
 	}
 	id := addForTagging(t, "Renamed")
-	if _, err := executeCaptured(t, "tag", itoa(id), "v2.4.4"); err != nil {
+	if _, err := executeCaptured(t, "tag", itoa(id), "v1.2.0"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := executeCaptured(t, "tag", "rename", "v2.4.4", "v2.4.5"); err != nil {
+	if _, err := executeCaptured(t, "tag", "rename", "v1.2.0", "v1.3.0"); err != nil {
 		t.Fatal(err)
 	}
-	if got := strings.Join(tagsOf(t, id), ","); got != "v2.4.5" {
+	if got := strings.Join(tagsOf(t, id), ","); got != "v1.3.0" {
 		t.Fatalf("after rename: %s", got)
 	}
 
-	if _, err := executeCaptured(t, "tag", "rm", "v2.4.5"); err != nil {
+	if _, err := executeCaptured(t, "tag", "rm", "v1.3.0"); err != nil {
 		t.Fatal(err)
 	}
 	if got := tagsOf(t, id); len(got) != 0 {

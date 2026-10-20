@@ -11,14 +11,14 @@ struct TagTests {
 
     @Test func tagSelectionKeepsOnlyMatchingActiveRequirements() {
         let state = AppState()
-        state.reqs = [requirement(1, tags: ["v2.4.4"]),
-                      requirement(2, tags: ["v2.4.4", "bug"]),
+        state.reqs = [requirement(1, tags: ["v1.2.0"]),
+                      requirement(2, tags: ["v1.2.0", "bug"]),
                       requirement(3, tags: ["bug"]),
                       requirement(4, tags: nil),
                       // Done items must not appear in tag views, consistent with project views
-                      requirement(5, tags: ["v2.4.4"], state: .done)]
-        state.showTag("v2.4.4")
-        #expect(state.selection == .tag("v2.4.4"))
+                      requirement(5, tags: ["v1.2.0"], state: .done)]
+        state.showTag("v1.2.0")
+        #expect(state.selection == .tag("v1.2.0"))
         // Equal timestamps sort by ID descending, consistent with other board views
         #expect(state.filtered.map(\.id) == [2, 1])
     }
@@ -42,17 +42,17 @@ struct TagTests {
 
     @Test func searchMatchesTagText() {
         let state = AppState()
-        state.reqs = [requirement(1, tags: ["v2.4.4"]),
+        state.reqs = [requirement(1, tags: ["v1.2.0"]),
                       requirement(2, tags: ["bug"])]
-        state.requirementQuery = "v2.4.4"
+        state.requirementQuery = "v1.2.0"
         #expect(state.filtered.map(\.id) == [1])
     }
 
     /// The ⌘K palette and in-list filter are separate paths; sharing searchText keeps them from diverging.
     @Test func searchTextCoversEveryMatchableField() {
-        let req = requirement(42, tags: ["v2.4.4", "bug"])
+        let req = requirement(42, tags: ["v1.2.0", "bug"])
         let text = req.searchText
-        for needle in ["42", "Requirement 42", "Studio", "v2.4.4", "bug", "inbox"] {
+        for needle in ["42", "Requirement 42", "Studio", "v1.2.0", "bug", "inbox"] {
             #expect(text.localizedCaseInsensitiveContains(needle))
         }
     }

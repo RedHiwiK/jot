@@ -48,7 +48,7 @@ This is the entry point of the whole tool, designed to cost less effort than not
 Capture asks nothing: the project is an optional category you can fill in later.`,
 		Example: `  jot add "Search page is slow"
   jot add "Search is slow" --note "Traced to a direct DB query inside onChange"
-  jot add "Ship the new board" --tag v2.4.4
+  jot add "Ship the new board" --tag v1.2.0
   jot add --stdin  < ideas.txt`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			s, err := openStore()
