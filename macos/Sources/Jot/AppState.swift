@@ -227,6 +227,16 @@ final class AppState: ObservableObject {
         }
     }
 
+    /// The CLI only purges archived requirements, so anything still active is archived first
+    func delete(_ req: Req) {
+        perform {
+            if req.state != .archived { try await JotClient.shared.archive(req.id) }
+            try await JotClient.shared.purge(req.id)
+            if self.archivedUndo?.id == req.id { self.archivedUndo = nil }
+            if self.selectedReqID == req.id { self.selectedReqID = nil }
+        }
+    }
+
     func undoArchive() {
         guard let req = archivedUndo, !isLoading else { return }
         perform {

@@ -44,6 +44,8 @@ jot purge 42 43 --yes
 
 `purge` only accepts archived requirements. It removes the database rows, tags, links, state history and the Markdown file. It cannot be undone; prefer archiving.
 
+In the app, right-click a card or row and choose **Delete…**. After you confirm, the app archives the requirement if needed and then purges it.
+
 ## A typical week
 
 1. Capture freely during the day; everything lands in **Inbox**.

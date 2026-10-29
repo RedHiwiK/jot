@@ -40,6 +40,7 @@ struct OverviewBoard: View {
     @FocusState private var listFocused: Bool
     @State private var keyboardSelection: Int?
     @FocusState private var focusedCardID: Int?
+    @State private var deleting: Req?
 
     private var columns: [ReqState] {
         // A state picked in the sidebar shows only that column (Done / Archived go this way too)
@@ -86,6 +87,14 @@ struct OverviewBoard: View {
         }
         }
         .background(th.canvas)
+        .confirmationDialog(L[.deleteReqTitle],
+                            isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
+                            presenting: deleting) { req in
+            Button(L[.actDelete], role: .destructive) { state.delete(req) }
+            Button(L[.actCancel], role: .cancel) { }
+        } message: { _ in
+            Text(L[.deleteReqMessage])
+        }
     }
 
     private var requirementList: some View {
@@ -420,6 +429,8 @@ struct OverviewBoard: View {
         } else {
             Button(L[.actArchive], role: .destructive) { state.archive(req) }
         }
+        Divider()
+        Button(L[.actDelete] + "…", role: .destructive) { deleting = req }
     }
 }
 
