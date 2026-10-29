@@ -96,6 +96,11 @@ actor JotClient {
         try run(["rm", "\(id)"])
     }
 
+    /// Hard delete. --yes skips the CLI's stdin prompt; the app asks for confirmation itself
+    func purge(_ id: Int) throws {
+        try run(["purge", "\(id)", "--yes"])
+    }
+
     // MARK: - Projects
 
     func renameProject(_ old: String, to new: String) throws {

@@ -51,6 +51,7 @@ enum S: String {
     // Actions
 
     case actArchive, actRestore, actSave, actRevert
+    case actDelete, deleteReqTitle, deleteReqMessage
     case actCancel, actCreate, actChangeState, actChangeProject
     case actRename, renameTitle
 
@@ -184,6 +185,9 @@ enum L {
 
         .actArchive:       "Archive",
         .actRestore:       "Restore",
+        .actDelete:        "Delete",
+        .deleteReqTitle:   "Delete this requirement?",
+        .deleteReqMessage: "The requirement and its Markdown file are permanently deleted. This cannot be undone.",
 
         .actSave:          "Save",
         .actRevert:        "Revert",
@@ -300,6 +304,9 @@ enum L {
 
         .actArchive:       "归档",
         .actRestore:       "恢复",
+        .actDelete:        "删除",
+        .deleteReqTitle:   "删除这条需求？",
+        .deleteReqMessage: "需求及其 Markdown 文件将被永久删除，无法恢复。",
 
         .actSave:          "保存",
         .actRevert:        "还原",
